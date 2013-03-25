@@ -34,6 +34,10 @@ class Debris(InanimateDrawable):
 	def __init__(self, x, y): 
 		super(Debris, self).__init__(self, image, x, y)
 
+class Food(InanimateDrawable):
+	def __init__(self, x, y):
+		super(Food, self).__init__(self, image, x, y)
+
 
 
 def main():
