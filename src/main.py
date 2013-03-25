@@ -39,7 +39,7 @@ class Food(InanimateDrawable):
 		super(Food, self).__init__(self, image, x, y)
 
 class Base(InanimateDrawable): # TODO: perhaps rename this? Base sounds a bit unprofessional. Ant hive does too.
-	def __init__(self, x, y):
+	def __init__(self):
 		super(Base, self).__init__(self, image, x, y)
 
 
