@@ -1,4 +1,5 @@
 import pyglet
+from random import randrange
 
 
 window = pyglet.window.Window(800, 600, caption="Pheromone")
@@ -17,7 +18,6 @@ class AnimateDrawable(Drawable):
 	def __init__(self, animation, x, y):
 		super(AnimateDrawable, self).__init(self, x, y)
 		self.animation = animation
-	
 
 class InanimateDrawable(Drawable):
 	def __init__(self, image, x, y):
@@ -29,7 +29,6 @@ class Ant(AnimateDrawable):
 	def __init__(self, x, y):
 		super(Ant, self).__init__(self, animation, x, y)
 
-
 class Debris(InanimateDrawable):
 	def __init__(self, x, y): 
 		super(Debris, self).__init__(self, image, x, y)
@@ -40,6 +39,10 @@ class Food(InanimateDrawable):
 
 class Base(InanimateDrawable): # TODO: perhaps rename this? Base sounds a bit unprofessional. Ant hive does too.
 	def __init__(self):
+		# The Base image can't be outside the screen
+		# x = randrange(0, screenWidth - baseWidth)
+		# y = randrange(0, screenHeight - baseHeight)
+
 		super(Base, self).__init__(self, image, x, y)
 
 
@@ -50,6 +53,8 @@ def update(self):
 def main():
 	print "Welcome to Pheromone!"
 	print "Pheromone is an ant colony simulator."
+
+	home = Base()
 
 
 if __name__ == "__main__":
