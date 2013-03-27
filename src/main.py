@@ -1,8 +1,10 @@
 import pyglet
-from random import randrange
+from random import randrange # needed since everything is randomly positioned
 
+screenWidth = 800
+screenHeight = 600
 
-window = pyglet.window.Window(800, 600, caption="Pheromone")
+window = pyglet.window.Window(screenWidth, screenHeight, caption="Pheromone")
 window.clear()
 
 pyglet.resource.path = ["../res"]
@@ -39,7 +41,7 @@ class Food(InanimateDrawable):
 
 class Base(InanimateDrawable): # TODO: perhaps rename this? Base sounds a bit unprofessional. Ant hive does too.
 	def __init__(self):
-		# The Base image can't be outside the screen
+		# The Base image can't be outside the screen. The Base graphics will be made soon.
 		# x = randrange(0, screenWidth - baseWidth)
 		# y = randrange(0, screenHeight - baseHeight)
 
