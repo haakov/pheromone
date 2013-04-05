@@ -1,7 +1,7 @@
 import pyglet
 from random import randrange # needed since everything is randomly positioned
 
-screenWidth = 800
+screenWidth = 1200
 screenHeight = 600
 
 window = pyglet.window.Window(screenWidth, screenHeight, caption="Pheromone")
@@ -39,13 +39,13 @@ class Food(InanimateDrawable):
 	def __init__(self, x, y):
 		super(Food, self).__init__(self, image, x, y)
 
-class Base(InanimateDrawable): # TODO: perhaps rename this? Base sounds a bit unprofessional. Ant hive does too.
+class Nest(InanimateDrawable): 
 	def __init__(self):
-		# The Base image can't be outside the screen. The Base graphics will be made soon.
+		# The Nest image can't be outside the screen. The Nest graphics will be made soon.
 		# x = randrange(0, screenWidth - baseWidth)
 		# y = randrange(0, screenHeight - baseHeight)
 
-		super(Base, self).__init__(self, image, x, y)
+		super(Nest, self).__init__(self, image, x, y)
 
 
 @window.event
@@ -56,7 +56,7 @@ def main():
 	print "Welcome to Pheromone!"
 	print "Pheromone is an ant colony simulator."
 
-	home = Base()
+	home = Nest()
 
 
 if __name__ == "__main__":
