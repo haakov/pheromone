@@ -37,7 +37,11 @@ class Nest(object):
 
 		self.sprite = pyglet.sprite.Sprite(self.image, self.x, self.y)
 home = Nest()
-debris = Debris()
+
+debrises = []
+
+for i in range(0, 15):
+	debrises.append(Debris())
 
 @window.event
 def update(self):
@@ -49,7 +53,6 @@ def main():
 	print "Pheromone is an ant colony simulator."
 
 
-
 if __name__ == "__main__":
 	main()
 
@@ -57,7 +60,8 @@ if __name__ == "__main__":
 def on_draw():
 	window.clear()
 	home.sprite.draw()
-	debris.sprite.draw()
+	for i in range(0,15):
+		debrises[i].sprite.draw()
 
 # TODO: move this somewhere else
 pyglet.app.run()
