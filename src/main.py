@@ -38,10 +38,6 @@ class Nest(object):
 		self.sprite = pyglet.sprite.Sprite(self.image, self.x, self.y)
 home = Nest()
 debris = Debris()
-debris1 = Debris()
-debris2 = Debris()
-debris3 = Debris()
-debris4 = Debris()
 
 @window.event
 def update(self):
@@ -62,9 +58,6 @@ def on_draw():
 	window.clear()
 	home.sprite.draw()
 	debris.sprite.draw()
-	debris1.sprite.draw()
-	debris2.sprite.draw()
-	debris3.sprite.draw()
-	debris4.sprite.draw()
+
 # TODO: move this somewhere else
 pyglet.app.run()
