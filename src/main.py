@@ -17,9 +17,13 @@ class Debris(object):
 	def __init__(self): 
 		self.image = pyglet.image.load("res/debris/" + str(randrange(1, 3)) + ".png")
 		self.width, self.height = self.image.width, self.image.height
-
-		self.x = randrange(0, screenWidth - self.width)
-		self.y = randrange(0, screenHeight - self.height)
+		while True:
+			self.x = randrange(0, screenWidth - self.width)
+			self.y = randrange(0, screenHeight - self.height)
+			if (self.x+self.width < home.x or self.x > home.x+home.width):
+				break
+			elif (self.y+self.height < home.y or self.y > home.y+home.height):
+				break
 
 		self.sprite = pyglet.sprite.Sprite(self.image, self.x, self.y)
 
@@ -40,7 +44,7 @@ home = Nest()
 
 debrises = []
 
-for i in range(0, 15):
+for i in range(0, 255):
 	debrises.append(Debris())
 
 @window.event
@@ -60,7 +64,7 @@ if __name__ == "__main__":
 def on_draw():
 	window.clear()
 	home.sprite.draw()
-	for i in range(0,15):
+	for i in range(0,len(debrises)):
 		debrises[i].sprite.draw()
 
 # TODO: move this somewhere else
