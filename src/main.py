@@ -20,7 +20,7 @@ class Ant(object):
 		if (self.x+self.width/2)<(home.x+home.width/2):
 			self.image = pyglet.resource.image("ants/idle.png", flip_x=True)
 
-		self.sprite = pyglet.sprite.Sprite(self.image, self.x, self.y)
+		self.sprite = pyglet.sprite.Sprite(self.image, self.x, self.y, batch=antBatch)
 
 class Debris(object):
 	def __init__(self): 
@@ -34,7 +34,7 @@ class Debris(object):
 			elif (self.y+self.height < home.y or self.y > home.y+home.height):
 				break
 
-		self.sprite = pyglet.sprite.Sprite(self.image, self.x, self.y)
+		self.sprite = pyglet.sprite.Sprite(self.image, self.x, self.y, batch=debrisBatch)
 
 class Food(object):
 	def __init__(self):
@@ -53,6 +53,9 @@ home = Nest()
 
 debrises = []
 ants = []
+
+antBatch = pyglet.graphics.Batch()
+debrisBatch = pyglet.graphics.Batch()
 
 for i in range(0,8):
 	ants.append(Ant())
@@ -77,10 +80,8 @@ if __name__ == "__main__":
 def on_draw():
 	window.clear()
 	home.sprite.draw()
-	for i in range(0,len(debrises)):
-		debrises[i].sprite.draw()
-	for i in range(0, len(ants)):
-	 	ants[i].sprite.draw()
+	debrisBatch.draw()
+	antBatch.draw()
 
 # TODO: move this somewhere else
 pyglet.app.run()
