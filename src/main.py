@@ -12,7 +12,7 @@ pyglet.resource.reindex()
 
 class Ant(object):
 	def __init__(self):
-		self.image = pyglet.resource.image("ants/topdown.png")
+		self.image = pyglet.resource.image("ants/topdown.png", rotate=270)
 		self.width, self.height = self.image.width, self.image.height
 		
 		self.x = randrange(home.x-self.width, home.x+home.width)
