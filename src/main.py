@@ -10,6 +10,16 @@ window = pyglet.window.Window(screenWidth, screenHeight, caption="Pheromone")
 pyglet.resource.path = ["../res"]
 pyglet.resource.reindex()
 
+class Cloud(object):
+	def __init__(self):
+		self.image = pyglet.resource.image("intro/cloud.png")
+		# Don't need to care about width and height
+
+		self.x = randrange(-50, 1150)
+		self.y = randrange(-50, 550)
+
+		self.sprite = pyglet.sprite.Sprite(self.image, self.x, self.y, batch=cloudBatch)
+
 class Ant(object):
 	def __init__(self):
 		self.image = pyglet.resource.image("ants/topdown.png", rotate=270)
@@ -54,15 +64,20 @@ home = Nest()
 
 debrises = []
 ants = []
+clouds = []
 
 antBatch = pyglet.graphics.Batch()
 debrisBatch = pyglet.graphics.Batch()
+cloudBatch = pyglet.graphics.Batch()
 
 for i in range(0,8):
 	ants.append(Ant())
 
 for i in range(0, 255):
 	debrises.append(Debris())
+
+for i in range(0, 4):
+	clouds.append(Cloud())
 
 @window.event
 def update(self):
@@ -79,11 +94,10 @@ if __name__ == "__main__":
 
 @window.event
 def on_draw():
-	glClearColor(0.72, 0.54, 0.0, 0.0)
+	#glClearColor(0.72, 0.54, 0.0, 0.0)
+	glClearColor(0.396, 0.745, 1.0, 0.0)
 	glClear(GL_COLOR_BUFFER_BIT)
-	home.sprite.draw()
-	debrisBatch.draw()
-	antBatch.draw()
+	cloudBatch.draw()
 
 # TODO: move this somewhere else
 pyglet.app.run()
