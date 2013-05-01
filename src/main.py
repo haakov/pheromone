@@ -20,6 +20,14 @@ class Cloud(object):
 
 		self.sprite = pyglet.sprite.Sprite(self.image, self.x, self.y, batch=cloudBatch)
 
+class Title(object):
+	def __init__(self):
+		# Ubuntu font
+		self.image = pyglet.resource.image("intro/title.png")
+		self.width, self.height = self.image.width, self.image.height
+
+		self.sprite = pyglet.sprite.Sprite(self.image, self.x, self.y)
+
 class Ant(object):
 	def __init__(self):
 		self.image = pyglet.resource.image("ants/topdown.png", rotate=270)
