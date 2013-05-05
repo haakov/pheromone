@@ -26,7 +26,9 @@ class Title(object):
 		self.image = pyglet.resource.image("intro/title.png")
 		self.width, self.height = self.image.width, self.image.height
 
-		self.sprite = pyglet.sprite.Sprite(self.image, self.x, self.y)
+		self.sprite = pyglet.sprite.Sprite(self.image, screenWidth/2-self.width/2, 1.5*screenHeight)
+
+		self.dy = 1500.0
 
 class Ant(object):
 	def __init__(self):
@@ -73,6 +75,7 @@ home = Nest()
 debrises = []
 ants = []
 clouds = []
+title = Title()
 
 antBatch = pyglet.graphics.Batch()
 debrisBatch = pyglet.graphics.Batch()
@@ -91,6 +94,12 @@ for i in range(0, 4):
 def update(self):
 	pass
 
+def introScene(dt):
+	title.sprite.y -= title.dy * dt
+	if (title.sprite.y+title.sprite.height/2 < screenHeight/2):
+		pyglet.clock.unschedule(introScene)
+
+pyglet.clock.schedule_interval(introScene, 1/60.0)
 
 def main():
 	print "Welcome to Pheromone!"
@@ -106,6 +115,7 @@ def on_draw():
 	glClearColor(0.396, 0.745, 1.0, 0.0)
 	glClear(GL_COLOR_BUFFER_BIT)
 	cloudBatch.draw()
+	title.sprite.draw()
 
 # TODO: move this somewhere else
 pyglet.app.run()
