@@ -108,6 +108,9 @@ pyglet.clock.schedule_interval(introScene, 1/60.0)
 def main():
 	print "Welcome to Pheromone!"
 	print "Pheromone is an ant colony simulator."
+	# The following is here to avoid ugliness/artifacts on the very first frame
+	glClearColor(0.396, 0.745, 1.0, 0.0)
+	glClear(GL_COLOR_BUFFER_BIT)
 
 
 
