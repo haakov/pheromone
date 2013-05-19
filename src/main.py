@@ -98,6 +98,10 @@ def introScene(dt):
 	title.sprite.y -= title.dy * dt
 	if (title.sprite.y+title.sprite.height/2 < screenHeight/2):
 		pyglet.clock.unschedule(introScene)
+	glClearColor(0.396, 0.745, 1.0, 0.0)
+	glClear(GL_COLOR_BUFFER_BIT)
+	cloudBatch.draw()
+	title.sprite.draw()
 
 pyglet.clock.schedule_interval(introScene, 1/60.0)
 
@@ -106,16 +110,13 @@ def main():
 	print "Pheromone is an ant colony simulator."
 
 
+
 if __name__ == "__main__":
 	main()
 
 @window.event
 def on_draw():
-	#glClearColor(0.72, 0.54, 0.0, 0.0)
-	glClearColor(0.396, 0.745, 1.0, 0.0)
-	glClear(GL_COLOR_BUFFER_BIT)
-	cloudBatch.draw()
-	title.sprite.draw()
+	pass
 
 # TODO: move this somewhere else
 pyglet.app.run()
