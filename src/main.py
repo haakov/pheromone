@@ -90,10 +90,6 @@ for i in range(0, 255):
 for i in range(0, 4):
 	clouds.append(Cloud())
 
-@window.event
-def update(self):
-	pass
-
 def introScene(dt):
 	title.sprite.y -= title.dy * dt
 	if (title.sprite.y+title.sprite.height/2 < screenHeight/2):
