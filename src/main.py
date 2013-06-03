@@ -1,6 +1,7 @@
 import pyglet
 from random import randrange # needed since everything is randomly positioned
 from pyglet.gl import *
+import time # for time.sleep()
 
 screenWidth = 1200
 screenHeight = 600
@@ -93,6 +94,7 @@ for i in range(0, 4):
 def introScene(dt):
 	title.sprite.y -= title.dy * dt
 	if (title.sprite.y+title.sprite.height/2 < screenHeight/2):
+		time.sleep(1)
 		pyglet.clock.unschedule(introScene)
 		pyglet.clock.schedule_interval(mainScene, 1/60.0)
 	glClearColor(0.396, 0.745, 1.0, 0.0)
