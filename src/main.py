@@ -93,14 +93,15 @@ for i in range(0, 4):
 
 def introScene(dt):
 	title.sprite.y -= title.dy * dt
-	if (title.sprite.y+title.sprite.height/2 < screenHeight/2):
-		time.sleep(1)
-		pyglet.clock.unschedule(introScene)
-		pyglet.clock.schedule_interval(mainScene, 1/60.0)
 	glClearColor(0.396, 0.745, 1.0, 0.0)
 	glClear(GL_COLOR_BUFFER_BIT)
 	cloudBatch.draw()
 	title.sprite.draw()
+	if (title.sprite.y+title.sprite.height/2 < screenHeight/2):
+		window.flip()
+		time.sleep(1)
+		pyglet.clock.unschedule(introScene)
+		pyglet.clock.schedule_interval(mainScene, 1/60.0)
 
 def mainScene(dt):
 	glClearColor(0.612, 0.286, 0.023, 0.0)
