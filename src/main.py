@@ -52,9 +52,11 @@ class Debris(object):
 	def __init__(self): 
 		self.image = pyglet.resource.image("debris/" + str(random.randrange(1, 3)) + ".png")
 		self.width, self.height = self.image.width, self.image.height
+
 		while True:
 			self.x = random.randrange(0, screenWidth - self.width)
 			self.y = random.randrange(0, screenHeight - self.height)
+			
 			if (self.x+self.width < home.x or self.x > home.x+home.width):
 				break
 			elif (self.y+self.height < home.y or self.y > home.y+home.height):
@@ -97,33 +99,41 @@ for i in range(0, 4):
 
 def introScene(dt):
 	title.sprite.y -= title.dy * dt
+	
 	glClearColor(0.396, 0.745, 1.0, 0.0)
 	glClear(GL_COLOR_BUFFER_BIT)
+	
 	cloudBatch.draw()
 	title.sprite.draw()
+
 	if (title.sprite.y+title.sprite.height/2 < screenHeight/2):
 		window.flip()
 		time.sleep(1)
+		
 		pyglet.clock.unschedule(introScene)
 		pyglet.clock.schedule_interval(mainScene, 1/10.0)
 
 def mainScene(dt):
 	glClearColor(0.612, 0.286, 0.023, 0.0)
 	glClear(GL_COLOR_BUFFER_BIT)
-	for i in range(0,8):
+	for i in range(0, 8):
 		ants[i].plus_x = float(random.randint(-25, 25))
 		while ants[i].plus_x == 0:
 			ants[i].plus_x = float(random.randint(-25, 25))
+
 		ants[i].plus_y = float(random.randint(-25, 25))
 		while ants[i].plus_y == 0:
 			ants[i].plus_y = float(random.randint(-25, 25))
-		print ants[i].plus_x, ants[i].plus_y
+
 		ants[i].plus_rotation = math.degrees(math.atan(ants[i].plus_x/ants[i].plus_y))
-		if(ants[i].plus_y<0):
+		
+		if(ants[i].plus_y < 0):
 			ants[i].plus_rotation += 180.0
+
 		ants[i].sprite.rotation = ants[i].plus_rotation
 		ants[i].sprite.x += ants[i].plus_x
 		ants[i].sprite.y += ants[i].plus_y
+
 	home.sprite.draw()
 	debrisBatch.draw()
 	antBatch.draw()
