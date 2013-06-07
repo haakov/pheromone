@@ -3,6 +3,7 @@ import random # needed since everything is randomly positioned
 from pyglet.gl import *
 import time # for time.sleep()
 import math
+import pdb
 
 screenWidth = 1200
 screenHeight = 600
@@ -112,6 +113,17 @@ def mainScene(dt):
 		ants[i].sprite.rotation = ants[i].plus_rotation
 		ants[i].sprite.x += ants[i].plus_x
 		ants[i].sprite.y += ants[i].plus_y
+
+		if ants[i].sprite.x < 0:
+			ants[i].sprite.x = 0
+		if ants[i].sprite.y < 0:
+			ants[i].sprite.y = 0
+
+		if ants[i].sprite.x + ants[i].sprite.width > screenWidth:
+			ants[i].sprite.x = screenWidth - ants[i].sprite.width
+		if ants[i].sprite.y + ants[i].sprite.height > screenHeight:
+			ants[i].sprite.y = screenHeight - ants[i].sprite.width
+		
 
 	home.sprite.draw()
 	antBatch.draw()
