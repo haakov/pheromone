@@ -48,22 +48,6 @@ class Ant(object):
 		self.sprite.image.anchor_x = self.width / 2
 		self.sprite.image.anchor_y = self.height / 2
 
-class Debris(object):
-	def __init__(self): 
-		self.image = pyglet.resource.image("debris/" + str(random.randrange(1, 3)) + ".png")
-		self.width, self.height = self.image.width, self.image.height
-
-		while True:
-			self.x = random.randrange(0, screenWidth - self.width)
-			self.y = random.randrange(0, screenHeight - self.height)
-			
-			if (self.x+self.width < home.x or self.x > home.x+home.width):
-				break
-			elif (self.y+self.height < home.y or self.y > home.y+home.height):
-				break
-
-		self.sprite = pyglet.sprite.Sprite(self.image, self.x, self.y, batch=debrisBatch)
-
 class Food(object):
 	def __init__(self):
 		pass
@@ -79,20 +63,15 @@ class Nest(object):
 		self.sprite = pyglet.sprite.Sprite(self.image, self.x, self.y)
 home = Nest()
 
-debrises = []
 ants = []
 clouds = []
 title = Title()
 
 antBatch = pyglet.graphics.Batch()
-debrisBatch = pyglet.graphics.Batch()
 cloudBatch = pyglet.graphics.Batch()
 
 for i in range(0, 8):
 	ants.append(Ant())
-
-for i in range(0, 255):
-	debrises.append(Debris())
 
 for i in range(0, 4):
 	clouds.append(Cloud())
@@ -135,7 +114,6 @@ def mainScene(dt):
 		ants[i].sprite.y += ants[i].plus_y
 
 	home.sprite.draw()
-	debrisBatch.draw()
 	antBatch.draw()
 
 pyglet.clock.schedule_interval(introScene, 1/60.0)
