@@ -119,6 +119,11 @@ def mainScene(dt):
 		if ants[i].sprite.y < 0:
 			ants[i].sprite.y = 0
 
+		if ants[i].sprite.x - ants[i].sprite.width < 0:
+			ants[i].sprite.x = 0 + ants[i].sprite.width
+		if ants[i].sprite.y - ants[i].sprite.width < 0:
+			ants[i].sprite.y = 0 + ants[i].sprite.width
+
 		if ants[i].sprite.x + ants[i].sprite.width > screenWidth:
 			ants[i].sprite.x = screenWidth - ants[i].sprite.width
 		if ants[i].sprite.y + ants[i].sprite.height > screenHeight:
