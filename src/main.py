@@ -3,7 +3,6 @@ import random # needed since everything is randomly positioned
 from pyglet.gl import *
 import time # for time.sleep()
 import math
-import pdb
 
 screenWidth = 1200
 screenHeight = 600
