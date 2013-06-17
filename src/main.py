@@ -96,13 +96,21 @@ def mainScene(dt):
 	glClearColor(0.612, 0.286, 0.023, 0.0)
 	glClear(GL_COLOR_BUFFER_BIT)
 	for i in range(0, 8):
-		ants[i].plus_x = float(random.randint(-25, 25))
-		while ants[i].plus_x == 0:
-			ants[i].plus_x = float(random.randint(-25, 25))
+		if ants[i].sprite.rotation == 0:
+			ants[i].sprite.rotation = 360
+		elif ants[i].sprite.rotation < 0:
+			ants[i].sprite.rotation += 360
+		elif ants[i].sprite.rotation > 0:
+			ants[i].sprite.rotation -= 360
 
-		ants[i].plus_y = float(random.randint(-25, 25))
+
+		ants[i].plus_x = 5 * float(math.sin(math.radians(random.randint(int(ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)))))
+		while ants[i].plus_x == 0:
+			ants[i].plus_x = 5 * float(math.sin(math.radians(random.randint(int(ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)))))
+
+		ants[i].plus_y = 5 * float(math.cos(math.radians(random.randint(int(ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)))))
 		while ants[i].plus_y == 0:
-			ants[i].plus_y = float(random.randint(-25, 25))
+			ants[i].plus_y = 5 * float(math.cos(math.radians(random.randint(int(ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)))))
 
 		ants[i].plus_rotation = math.degrees(math.atan(ants[i].plus_x/ants[i].plus_y))
 		
@@ -115,18 +123,24 @@ def mainScene(dt):
 
 		if ants[i].sprite.x < 0:
 			ants[i].sprite.x = 0
+			ants[i].sprite.rotation -= 180
 		if ants[i].sprite.y < 0:
 			ants[i].sprite.y = 0
+			ants[i].sprite.rotation -= 180
 
 		if ants[i].sprite.x - ants[i].sprite.width < 0:
 			ants[i].sprite.x = 0 + ants[i].sprite.width
+			ants[i].sprite.rotation -= 180
 		if ants[i].sprite.y - ants[i].sprite.width < 0:
 			ants[i].sprite.y = 0 + ants[i].sprite.width
+			ants[i].sprite.rotation -= 180
 
 		if ants[i].sprite.x + ants[i].sprite.width > screenWidth:
 			ants[i].sprite.x = screenWidth - ants[i].sprite.width
+			ants[i].sprite.rotation -= 180
 		if ants[i].sprite.y + ants[i].sprite.height > screenHeight:
 			ants[i].sprite.y = screenHeight - ants[i].sprite.width
+			ants[i].sprite.rotation -= 180
 		
 
 	home.sprite.draw()
