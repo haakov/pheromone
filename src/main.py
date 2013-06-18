@@ -3,6 +3,7 @@ import random # needed since everything is randomly positioned
 from pyglet.gl import *
 import time # for time.sleep()
 import math
+import pdb
 
 screenWidth = 1200
 screenHeight = 600
@@ -96,14 +97,6 @@ def mainScene(dt):
 	glClearColor(0.612, 0.286, 0.023, 0.0)
 	glClear(GL_COLOR_BUFFER_BIT)
 	for i in range(0, 8):
-		if ants[i].sprite.rotation == 0:
-			ants[i].sprite.rotation = 360
-		elif ants[i].sprite.rotation < 0:
-			ants[i].sprite.rotation += 360
-		elif ants[i].sprite.rotation > 0:
-			ants[i].sprite.rotation -= 360
-
-
 		ants[i].plus_x = 5 * float(math.sin(math.radians(random.randint(int(ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)))))
 		while ants[i].plus_x == 0:
 			ants[i].plus_x = 5 * float(math.sin(math.radians(random.randint(int(ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)))))
@@ -124,24 +117,20 @@ def mainScene(dt):
 		if ants[i].sprite.x < 0:
 			ants[i].sprite.x = 0
 			ants[i].sprite.rotation -= 180
-		if ants[i].sprite.y < 0:
+		elif ants[i].sprite.y < 0:
 			ants[i].sprite.y = 0
-			ants[i].sprite.rotation -= 180
-
-		if ants[i].sprite.x - ants[i].sprite.width < 0:
+		elif ants[i].sprite.x - ants[i].sprite.width < 0:
 			ants[i].sprite.x = 0 + ants[i].sprite.width
 			ants[i].sprite.rotation -= 180
-		if ants[i].sprite.y - ants[i].sprite.width < 0:
+		elif ants[i].sprite.y - ants[i].sprite.width < 0:
 			ants[i].sprite.y = 0 + ants[i].sprite.width
 			ants[i].sprite.rotation -= 180
-
-		if ants[i].sprite.x + ants[i].sprite.width > screenWidth:
-			ants[i].sprite.x = screenWidth - ants[i].sprite.width
+		elif ants[i].sprite.x + ants[i].sprite.height / 2 > screenWidth:
+			ants[i].sprite.x = screenWidth - ants[i].sprite.height / 2
 			ants[i].sprite.rotation -= 180
-		if ants[i].sprite.y + ants[i].sprite.height > screenHeight:
-			ants[i].sprite.y = screenHeight - ants[i].sprite.width
+		elif ants[i].sprite.y + ants[i].sprite.height / 2 > screenHeight:
+			ants[i].sprite.y = screenHeight - ants[i].sprite.height / 2
 			ants[i].sprite.rotation -= 180
-		
 
 	home.sprite.draw()
 	antBatch.draw()
