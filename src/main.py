@@ -97,13 +97,37 @@ def mainScene(dt):
 	glClearColor(0.612, 0.286, 0.023, 0.0)
 	glClear(GL_COLOR_BUFFER_BIT)
 	for i in range(0, 8):
-		ants[i].plus_x = 5 * float(math.sin(math.radians(random.randint(int(ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)))))
+		ants[i].plus_x = 5 * float(
+				math.sin(
+					math.radians(
+						random.randint(
+							int(
+								ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)
+							))))
 		while ants[i].plus_x == 0:
-			ants[i].plus_x = 5 * float(math.sin(math.radians(random.randint(int(ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)))))
+			ants[i].plus_x = 5 * float(
+					math.sin(
+						math.radians(
+							random.randint(
+								int(
+									ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)
+								))))
 
-		ants[i].plus_y = 5 * float(math.cos(math.radians(random.randint(int(ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)))))
+		ants[i].plus_y = 5 * float(
+				math.cos(
+					math.radians(
+						random.randint(
+							int(
+								ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)
+							))))
 		while ants[i].plus_y == 0:
-			ants[i].plus_y = 5 * float(math.cos(math.radians(random.randint(int(ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)))))
+			ants[i].plus_y = 5 * float(
+					math.cos(
+						math.radians(
+							random.randint(
+								int(
+									ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)
+								))))
 
 		ants[i].plus_rotation = math.degrees(math.atan(ants[i].plus_x/ants[i].plus_y))
 		
