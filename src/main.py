@@ -55,7 +55,7 @@ class Food(object):
 		self.image = pyglet.resource.image("food/100.png")
 		self.width, self.height = self.image.width, self.image.height
 
-		self.sprite = pyglet.sprite.Sprite(self.image, random.randint(0, screenWidth-self.width), random.randint(0, screenHeight-self.height))
+		self.sprite = pyglet.sprite.Sprite(self.image, random.randint(0, screenWidth-self.width), random.randint(0, screenHeight-self.height), batch=foodBatch)
 
 	def one_less(): # When an ant grabs a piece of food
 		pass
@@ -74,16 +74,21 @@ home = Nest()
 
 ants = []
 clouds = []
+foods = []
 title = Title()
 
 antBatch = pyglet.graphics.Batch()
 cloudBatch = pyglet.graphics.Batch()
+foodBatch = pyglet.graphics.Batch()
 
 for i in range(0, 8):
 	ants.append(Ant())
 
 for i in range(0, 4):
 	clouds.append(Cloud())
+
+for i in range(0, 3):
+	foods.append(Food())
 
 def introScene(dt):
 	title.sprite.y -= title.dy * dt
@@ -161,6 +166,7 @@ def mainScene(dt):
 			ants[i].sprite.rotation -= 180
 
 	home.sprite.draw()
+	foodBatch.draw()
 	antBatch.draw()
 
 pyglet.clock.schedule_interval(introScene, 1/60.0)
