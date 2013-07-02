@@ -1,4 +1,5 @@
 import pyglet
+
 import random # needed since everything is randomly positioned
 from pyglet.gl import *
 import time # for time.sleep()
@@ -51,7 +52,14 @@ class Ant(object):
 
 class Food(object):
 	def __init__(self):
+		self.image = pyglet.resource.image("food/100.png")
+		self.width, self.height = self.image.width, self.image.height
+
+		self.sprite = pyglet.sprite.Sprite(self.image, random.randint(0, screenWidth-self.width), random.randint(0, screenHeight-self.height))
+
+	def one_less(): # When an ant grabs a piece of food
 		pass
+
 
 class Nest(object): 
 	def __init__(self):
@@ -174,4 +182,6 @@ def on_draw():
 	pass
 
 # TODO: move this somewhere else
+
 pyglet.app.run()
+
