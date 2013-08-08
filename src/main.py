@@ -109,61 +109,61 @@ def introScene(dt):
 def mainScene(dt):
 	glClearColor(0.612, 0.286, 0.023, 0.0)
 	glClear(GL_COLOR_BUFFER_BIT)
-	for i in range(0, 8):
-		ants[i].plus_x = 5 * float(
+	for ant in ants:
+		ant.plus_x = 5 * float(
 				math.sin(
 					math.radians(
 						random.randint(
-							int(ants[i].sprite.rotation-20), int(ants[i].sprite.rotation+20)
+							int(ant.sprite.rotation-20), int(ant.sprite.rotation+20)
 							))))
-		while ants[i].plus_x == 0:
-			ants[i].plus_x = 5 * float(
+		while ant.plus_x == 0:
+			ant.plus_x = 5 * float(
 					math.sin(
 						math.radians(
 							random.randint(
-								int(ants[i].sprite.rotation-20), int(ants[i].sprite.rotation+20)
+								int(ant.sprite.rotation-20), int(ant.sprite.rotation+20)
 								))))
 
-		ants[i].plus_y = 5 * float(
+		ant.plus_y = 5 * float(
 				math.cos(
 					math.radians(
 						random.randint(
-							int(ants[i].sprite.rotation-20), int(ants[i].sprite.rotation+20)
+							int(ant.sprite.rotation-20), int(ant.sprite.rotation+20)
 							))))
-		while ants[i].plus_y == 0:
-			ants[i].plus_y = 5 * float(
+		while ant.plus_y == 0:
+			ant.plus_y = 5 * float(
 					math.cos(
 						math.radians(
 							random.randint(
-								int(ants[i].sprite.rotation-20), int(ants[i].sprite.rotation+20)
+								int(ant.sprite.rotation-20), int(ant.sprite.rotation+20)
 								))))
 
-		ants[i].plus_rotation = math.degrees(math.atan(ants[i].plus_x/ants[i].plus_y))
+		ant.plus_rotation = math.degrees(math.atan(ant.plus_x/ant.plus_y))
 		
-		if(ants[i].plus_y < 0):
-			ants[i].plus_rotation += 180.0
+		if(ant.plus_y < 0):
+			ant.plus_rotation += 180.0
 
-		ants[i].sprite.rotation = ants[i].plus_rotation
-		ants[i].sprite.x += ants[i].plus_x
-		ants[i].sprite.y += ants[i].plus_y
+		ant.sprite.rotation = ant.plus_rotation
+		ant.sprite.x += ant.plus_x
+		ant.sprite.y += ant.plus_y
 
-		if ants[i].sprite.x < 0:
-			ants[i].sprite.x = 0
-			ants[i].sprite.rotation -= 180
-		elif ants[i].sprite.y < 0:
-			ants[i].sprite.y = 0
-		elif ants[i].sprite.x - ants[i].sprite.width < 0:
-			ants[i].sprite.x = 0 + ants[i].sprite.width
-			ants[i].sprite.rotation -= 180
-		elif ants[i].sprite.y - ants[i].sprite.width < 0:
-			ants[i].sprite.y = 0 + ants[i].sprite.width
-			ants[i].sprite.rotation -= 180
-		elif ants[i].sprite.x + ants[i].sprite.height / 2 > screenWidth:
-			ants[i].sprite.x = screenWidth - ants[i].sprite.height / 2
-			ants[i].sprite.rotation -= 180
-		elif ants[i].sprite.y + ants[i].sprite.height / 2 > screenHeight:
-			ants[i].sprite.y = screenHeight - ants[i].sprite.height / 2
-			ants[i].sprite.rotation -= 180
+		if ant.sprite.x < 0:
+			ant.sprite.x = 0
+			ant.sprite.rotation -= 180
+		elif ant.sprite.y < 0:
+			ant.sprite.y = 0
+		elif ant.sprite.x - ant.sprite.width < 0:
+			ant.sprite.x = 0 + ant.sprite.width
+			ant.sprite.rotation -= 180
+		elif ant.sprite.y - ant.sprite.width < 0:
+			ant.sprite.y = 0 + ant.sprite.width
+			ant.sprite.rotation -= 180
+		elif ant.sprite.x + ant.sprite.height / 2 > screenWidth:
+			ant.sprite.x = screenWidth - ant.sprite.height / 2
+			ant.sprite.rotation -= 180
+		elif ant.sprite.y + ant.sprite.height / 2 > screenHeight:
+			ant.sprite.y = screenHeight - ant.sprite.height / 2
+			ant.sprite.rotation -= 180
 
 	home.sprite.draw()
 	foodBatch.draw()
