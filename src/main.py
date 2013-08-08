@@ -114,28 +114,28 @@ def mainScene(dt):
 				math.sin(
 					math.radians(
 						random.randint(
-							int(ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)
+							int(ants[i].sprite.rotation-20), int(ants[i].sprite.rotation+20)
 							))))
 		while ants[i].plus_x == 0:
 			ants[i].plus_x = 5 * float(
 					math.sin(
 						math.radians(
 							random.randint(
-								int(ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)
+								int(ants[i].sprite.rotation-20), int(ants[i].sprite.rotation+20)
 								))))
 
 		ants[i].plus_y = 5 * float(
 				math.cos(
 					math.radians(
 						random.randint(
-							int(ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)
+							int(ants[i].sprite.rotation-20), int(ants[i].sprite.rotation+20)
 							))))
 		while ants[i].plus_y == 0:
 			ants[i].plus_y = 5 * float(
 					math.cos(
 						math.radians(
 							random.randint(
-								int(ants[i].sprite.rotation-45), int(ants[i].sprite.rotation+45)
+								int(ants[i].sprite.rotation-20), int(ants[i].sprite.rotation+20)
 								))))
 
 		ants[i].plus_rotation = math.degrees(math.atan(ants[i].plus_x/ants[i].plus_y))
