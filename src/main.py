@@ -14,7 +14,20 @@ window = pyglet.window.Window(screenWidth, screenHeight, caption="Pheromone")
 pyglet.resource.path = ["../res"]
 pyglet.resource.reindex()
 
-class Cloud(object):
+class Drawable(object):
+	def __init__(self):
+		pass
+
+	def get_x(self):
+		return self.sprite.x
+	def get_y(self):
+		return self.sprite.y
+	def get_width(self):
+		return self.sprite.width
+	def get_height(self):
+		return self.sprite.height
+
+class Cloud(Drawable):
 	def __init__(self):
 		self.image = pyglet.resource.image("intro/cloud.png")
 		# Don't need to care about width and height
@@ -24,7 +37,7 @@ class Cloud(object):
 
 		self.sprite = pyglet.sprite.Sprite(self.image, self.x, self.y, batch=cloudBatch)
 
-class Title(object):
+class Title(Drawable):
 	def __init__(self):
 		# Ubuntu font
 		self.image = pyglet.resource.image("intro/title.png")
@@ -34,7 +47,7 @@ class Title(object):
 
 		self.dy = 1500.0
 
-class Ant(object):
+class Ant(Drawable):
 	def __init__(self):
 		self.image = pyglet.resource.image("ants/topdown.png")
 		self.width, self.height = self.image.width, self.image.height
@@ -50,7 +63,7 @@ class Ant(object):
 		self.sprite.image.anchor_x = self.width / 2
 		self.sprite.image.anchor_y = self.height / 2
 
-class Food(object):
+class Food(Drawable):
 	def __init__(self):
 		self.image = pyglet.resource.image("food/100.png")
 		self.width, self.height = self.image.width, self.image.height
@@ -61,7 +74,7 @@ class Food(object):
 		pass
 
 
-class Nest(object): 
+class Nest(Drawable): 
 	def __init__(self):
 		self.image = pyglet.resource.image("ants/nest.png") 
 		self.width, self.height = self.image.width, self.image.height
@@ -147,22 +160,22 @@ def mainScene(dt):
 		ant.sprite.x += ant.plus_x
 		ant.sprite.y += ant.plus_y
 
-		if ant.sprite.x < 0:
+		if ant.get_x() < 0:
 			ant.sprite.x = 0
 			ant.sprite.rotation -= 180
-		elif ant.sprite.y < 0:
+		elif ant.get_y() < 0:
 			ant.sprite.y = 0
-		elif ant.sprite.x - ant.sprite.width < 0:
-			ant.sprite.x = 0 + ant.sprite.width
+		elif ant.get_x() - ant.get_width() < 0:
+			ant.sprite.x = 0 + ant.get_width()
 			ant.sprite.rotation -= 180
-		elif ant.sprite.y - ant.sprite.width < 0:
-			ant.sprite.y = 0 + ant.sprite.width
+		elif ant.get_y() - ant.get_width() < 0:
+			ant.sprite.y = 0 + ant.get_width()
 			ant.sprite.rotation -= 180
-		elif ant.sprite.x + ant.sprite.height / 2 > screenWidth:
-			ant.sprite.x = screenWidth - ant.sprite.height / 2
+		elif ant.get_x() + ant.get_height() / 2 > screenWidth:
+			ant.sprite.x = screenWidth - ant.get_height() / 2
 			ant.sprite.rotation -= 180
-		elif ant.sprite.y + ant.sprite.height / 2 > screenHeight:
-			ant.sprite.y = screenHeight - ant.sprite.height / 2
+		elif ant.get_y() + ant.get_height() / 2 > screenHeight:
+			ant.sprite.y = screenHeight - ant.get_height() / 2
 			ant.sprite.rotation -= 180
 
 	home.sprite.draw()
