@@ -26,6 +26,15 @@ class Drawable(object):
 		return self.sprite.width
 	def get_height(self):
 		return self.sprite.height
+	def get_rotation(self):
+		return self.sprite.rotation
+
+	def set_x(self, x):
+		self.sprite.x = x
+	def set_y(self, y):
+		self.sprite.y = y
+	def set_rotation(self, rotation):
+		self.sprite.rotation = rotation
 
 class Cloud(Drawable):
 	def __init__(self):
@@ -127,28 +136,28 @@ def mainScene(dt):
 				math.sin(
 					math.radians(
 						random.randint(
-							int(ant.sprite.rotation-20), int(ant.sprite.rotation+20)
+							int(ant.get_rotation()-20), int(ant.get_rotation()+20)
 							))))
 		while ant.plus_x == 0:
 			ant.plus_x = 5 * float(
 					math.sin(
 						math.radians(
 							random.randint(
-								int(ant.sprite.rotation-20), int(ant.sprite.rotation+20)
+								int(ant.get_rotation()-20), int(ant.get_rotation()+20)
 								))))
 
 		ant.plus_y = 5 * float(
 				math.cos(
 					math.radians(
 						random.randint(
-							int(ant.sprite.rotation-20), int(ant.sprite.rotation+20)
+							int(ant.get_rotation()-20), int(ant.get_rotation()+20)
 							))))
 		while ant.plus_y == 0:
 			ant.plus_y = 5 * float(
 					math.cos(
 						math.radians(
 							random.randint(
-								int(ant.sprite.rotation-20), int(ant.sprite.rotation+20)
+								int(ant.get_rotation()-20), int(ant.get_rotation()+20)
 								))))
 
 		ant.plus_rotation = math.degrees(math.atan(ant.plus_x/ant.plus_y))
@@ -156,27 +165,27 @@ def mainScene(dt):
 		if(ant.plus_y < 0):
 			ant.plus_rotation += 180.0
 
-		ant.sprite.rotation = ant.plus_rotation
-		ant.sprite.x += ant.plus_x
-		ant.sprite.y += ant.plus_y
+		ant.set_rotation(ant.plus_rotation)
+		ant.set_x(ant.get_x() + ant.plus_x)
+		ant.set_y(ant.get_y() + ant.plus_y)
 
 		if ant.get_x() < 0:
-			ant.sprite.x = 0
-			ant.sprite.rotation -= 180
+			ant.set_x(0)
+			ant.set_rotation(ant.get_rotation() - 180)
 		elif ant.get_y() < 0:
-			ant.sprite.y = 0
+			ant.set_y(0)
 		elif ant.get_x() - ant.get_width() < 0:
-			ant.sprite.x = 0 + ant.get_width()
-			ant.sprite.rotation -= 180
+			ant.set_x(ant.get_width())
+			ant.set_rotation(ant.get_rotation() - 180)
 		elif ant.get_y() - ant.get_width() < 0:
-			ant.sprite.y = 0 + ant.get_width()
-			ant.sprite.rotation -= 180
+			ant.set_y(ant.get_width())
+			ant.set_rotation(ant.get_rotation() - 180)
 		elif ant.get_x() + ant.get_height() / 2 > screenWidth:
-			ant.sprite.x = screenWidth - ant.get_height() / 2
-			ant.sprite.rotation -= 180
+			ant.set_x(screenWidth - ant.get_height() / 2)
+			ant.set_rotation(ant.get_rotation() - 180)
 		elif ant.get_y() + ant.get_height() / 2 > screenHeight:
-			ant.sprite.y = screenHeight - ant.get_height() / 2
-			ant.sprite.rotation -= 180
+			ant.set_y(screenHeight - ant.get_height() / 2)
+			ant.set_rotation(ant.get_rotation() - 180)
 
 	home.sprite.draw()
 	foodBatch.draw()
