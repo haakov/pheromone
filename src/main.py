@@ -44,40 +44,34 @@ class Cloud(Drawable):
 		self.x = random.randrange(-50, 1150)
 		self.y = random.randrange(-50, 550)
 
-		self.sprite = pyglet.sprite.Sprite(self.image, self.x, self.y, batch=cloudBatch)
+		self.sprite = pyglet.sprite.Sprite(self.image, random.randrange(-50, 1150), random.randrange(-50, 550), batch=cloudBatch)
 
 class Title(Drawable):
 	def __init__(self):
 		# Ubuntu font
 		self.image = pyglet.resource.image("intro/title.png")
-		self.width, self.height = self.image.width, self.image.height
 
-		self.sprite = pyglet.sprite.Sprite(self.image, screenWidth/2-self.width/2, 1.5*screenHeight)
+		self.sprite = pyglet.sprite.Sprite(self.image, screenWidth/2-self.image.width/2, 1.5*screenHeight)
 
 		self.dy = 1500.0
 
 class Ant(Drawable):
 	def __init__(self):
 		self.image = pyglet.resource.image("ants/topdown.png")
-		self.width, self.height = self.image.width, self.image.height
 
-		self.plus_x = 0.0 
-		self.plus_y = 0.0
-		self.plus_rotation = 0.0
+		self.plus_x = None 
+		self.plus_y = None
+		self.plus_rotation = None
 
-		self.x = random.randrange(home.x-self.width, home.x+home.width)
-		self.y = random.randrange(home.y-self.height, home.y+home.height)
-
-		self.sprite = pyglet.sprite.Sprite(self.image, self.x, self.y, batch=antBatch)
-		self.sprite.image.anchor_x = self.width / 2
-		self.sprite.image.anchor_y = self.height / 2
+		self.sprite = pyglet.sprite.Sprite(self.image, random.randrange(home.get_x()-self.image.width, home.get_x()+home.get_width()), random.randrange(home.get_y()-self.image.height, home.get_y()+home.get_height()), batch=antBatch)
+		self.sprite.image.anchor_x = self.get_width() / 2
+		self.sprite.image.anchor_y = self.get_height() / 2
 
 class Food(Drawable):
 	def __init__(self):
 		self.image = pyglet.resource.image("food/100.png")
-		self.width, self.height = self.image.width, self.image.height
 
-		self.sprite = pyglet.sprite.Sprite(self.image, random.randint(0, screenWidth-self.width), random.randint(0, screenHeight-self.height), batch=foodBatch)
+		self.sprite = pyglet.sprite.Sprite(self.image, random.randint(0, screenWidth-self.image.width), random.randint(0, screenHeight-self.image.height), batch=foodBatch)
 
 	def one_less(): # When an ant grabs a piece of food
 		pass
@@ -88,10 +82,7 @@ class Nest(Drawable):
 		self.image = pyglet.resource.image("ants/nest.png") 
 		self.width, self.height = self.image.width, self.image.height
 		
-		self.x = random.randrange(0, screenWidth - self.width)
-		self.y = random.randrange(0, screenHeight - self.height)
-
-		self.sprite = pyglet.sprite.Sprite(self.image, self.x, self.y)
+		self.sprite = pyglet.sprite.Sprite(self.image, random.randrange(0, screenWidth - self.width), random.randrange(0, screenHeight - self.height))
 home = Nest()
 
 ants = []
