@@ -14,6 +14,11 @@ window = pyglet.window.Window(screenWidth, screenHeight, caption="Pheromone")
 pyglet.resource.path = ["../res"]
 pyglet.resource.reindex()
 
+def project(u, v):
+	quotient = float(u[0] * v[0] + u[1] * v[1])
+	quotient /= float(v[0]**2 + v[1]**2)
+	return quotient * v[0], quotient * v[1]
+			
 class Drawable(object):
 	def __init__(self):
 		pass
@@ -35,6 +40,24 @@ class Drawable(object):
 		self.sprite.y = y
 	def set_rotation(self, rotation):
 		self.sprite.rotation = rotation
+
+	def get_rotated_vertex(self, x, y):
+		rotated_x = float((x - self.sprite.x) * math.cos(self.sprite.rotation) - (y - self.sprite.y) * math.sin(self.sprite.rotation) + self.sprite.x)
+		rotated_y = float((x - self.sprite.x) * math.sin(self.sprite.rotation) + (y - self.sprite.y) * math.cos(self.sprite.rotation) + self.sprite.y)
+		return rotated_x, rotated_y
+
+	def get_vertices(self):
+		bottom_left = ((self.get_x() - self.get_width() / 2), (self.get_y() - self.get_height() / 2))
+		bottom_right = ((self.get_x() + self.get_width() / 2), (self.get_y() - self.get_height() / 2))
+		top_left = ((self.get_x() - self.get_width() / 2), (self.get_y() + self.get_height() / 2))
+		top_right = ((self.get_x() + self.get_width() / 2), (self.get_y() + self.get_height() / 2))
+
+		bottom_left = self.get_rotated_vertex(*bottom_left)
+		bottom_right = self.get_rotated_vertex(*bottom_right)
+		top_left = self.get_rotated_vertex(*top_left)
+		top_right = self.get_rotated_vertex(*top_right)
+
+		return bottom_left, bottom_right, top_left, top_right
 
 class Cloud(Drawable):
 	def __init__(self):
