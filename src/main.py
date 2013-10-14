@@ -57,7 +57,24 @@ class Drawable(object):
 		top_left = self.get_rotated_vertex(*top_left)
 		top_right = self.get_rotated_vertex(*top_right)
 
-		return bottom_left, bottom_right, top_left, top_right
+		self.vertices = [bottom_left, bottom_right, top_left, top_right]
+
+	def get_axes(self):
+		return [(self.vertices[1][0] - self.vertices[0][0], self.vertices[1][1] - self.vertices[0][1]), (self.vertices[3][0] - self.vertices[1][0], self.vertices[3][1] - self.vertices[1][1])]
+
+	def project_on_axis(vertex, axis):
+		projection = project(vertex, axis)
+		return projection
+
+	def collides_with(self, other):
+		self.get_vertices()
+		other.get_vertices()
+		self.axes = self.get_axes()
+		other.axes = other.get_axes()
+
+		self.projected_vertices = []
+		for i in range(0,3):
+			self.projected_vertices.append(project(self.vertices[i], self.axes[0])
 
 class Cloud(Drawable):
 	def __init__(self):
@@ -204,6 +221,7 @@ def mainScene(dt):
 	home.sprite.draw()
 	foodBatch.draw()
 	antBatch.draw()
+	pdb.set_trace()
 
 pyglet.clock.schedule_interval(introScene, 1/60.0)
 
