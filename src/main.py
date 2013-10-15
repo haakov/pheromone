@@ -62,10 +62,6 @@ class Drawable(object):
 	def get_axes(self):
 		return [(self.vertices[1][0] - self.vertices[0][0], self.vertices[1][1] - self.vertices[0][1]), (self.vertices[3][0] - self.vertices[1][0], self.vertices[3][1] - self.vertices[1][1])]
 
-	def project_on_axis(vertex, axis):
-		projection = project(vertex, axis)
-		return projection
-
 	def collides_with(self, other):
 		self.get_vertices()
 		other.get_vertices()
@@ -73,8 +69,16 @@ class Drawable(object):
 		other.axes = other.get_axes()
 
 		self.projected_vertices = []
-		for i in range(0,3):
-			self.projected_vertices.append(project(self.vertices[i], self.axes[0])
+		other.projected_vertices = []
+		for i in range(0,4):
+			self.projected_vertices.append(project(self.vertices[i], self.axes[0]))
+			other.projected_vertices.append(project(other.vertices[i], self.axes[0]))		
+		for i in range(4,8):
+			self.projected_vertices.append(project(self.vertices[i], self.axes[1]))
+			other.projected_vertices.append(project(other.vertices[i], self.axes[1]))
+		
+		
+		
 
 class Cloud(Drawable):
 	def __init__(self):
