@@ -6,18 +6,30 @@ import time # for time.sleep()
 import math
 import pdb
 
-screenWidth = 1200
-screenHeight = 600
+screenWidth = 800
+screenHeight = 800
 
 window = pyglet.window.Window(screenWidth, screenHeight, caption="Pheromone")
 
 pyglet.resource.path = ["../res"]
 pyglet.resource.reindex()
 
+debug_label = pyglet.text.Label('Pheromone',
+				font_size=15)
+
 def project(u, v):
 	quotient = float(u[0] * v[0] + u[1] * v[1])
 	quotient /= float(v[0]**2 + v[1]**2)
 	return quotient * v[0], quotient * v[1]
+
+def vector_divide(u, v):
+	try:
+		quotient = float(u[0] / v[0])
+	except ZeroDivisionError:
+		quotient = float(u[0] / 1)
+		print "Divide by zero!"
+		# Really don't think this will ever happen
+	return quotient
 			
 class Drawable(object):
 	def __init__(self):
@@ -42,8 +54,10 @@ class Drawable(object):
 		self.sprite.rotation = rotation
 
 	def get_rotated_vertex(self, x, y):
-		rotated_x = float((x - self.sprite.x) * math.cos(self.sprite.rotation) - (y - self.sprite.y) * math.sin(self.sprite.rotation) + self.sprite.x)
-		rotated_y = float((x - self.sprite.x) * math.sin(self.sprite.rotation) + (y - self.sprite.y) * math.cos(self.sprite.rotation) + self.sprite.y)
+		p = self.get_x()
+		q = self.get_y()
+		rotated_x = float((x - p) * float(math.cos(math.radians(-1 * self.sprite.rotation))) - (y - q) * float(math.sin(math.radians(-1 * self.sprite.rotation))) + p)
+		rotated_y = float((x - p) * float(math.sin(math.radians(-1 * self.sprite.rotation))) + (y - q) * float(math.cos(math.radians(-1 * self.sprite.rotation))) + q)
 		return rotated_x, rotated_y
 
 	def get_vertices(self):
@@ -63,22 +77,120 @@ class Drawable(object):
 		return [(self.vertices[1][0] - self.vertices[0][0], self.vertices[1][1] - self.vertices[0][1]), (self.vertices[3][0] - self.vertices[1][0], self.vertices[3][1] - self.vertices[1][1])]
 
 	def collides_with(self, other):
+		self.projection_quotient = []
+		other.projection_quotient = []
 		self.get_vertices()
 		other.get_vertices()
 		self.axes = self.get_axes()
 		other.axes = other.get_axes()
+		intersecting = False
 
-		self.projected_vertices = []
-		other.projected_vertices = []
+		# 1st axis of self
 		for i in range(0,4):
-			self.projected_vertices.append(project(self.vertices[i], self.axes[0]))
-			other.projected_vertices.append(project(other.vertices[i], self.axes[0]))		
+			self.projection_quotient.append(vector_divide((project(self.vertices[i], self.axes[0])), self.axes[0])) # self projected onto self's 1st axis
+			other.projection_quotient.append(vector_divide((project(other.vertices[i], self.axes[0])), self.axes[0])) # other projected onto self's 1st axis
+		
+		if self.projection_quotient[0] <= other.projection_quotient[0]:
+			for i in range(1,4):
+				for o in range(1,4):
+					#pdb.set_trace()
+					if self.projection_quotient[i] >= other.projection_quotient[o]:
+						intersecting = True
+		if intersecting == False:
+			return False
+		else:
+			intersecting = False
+		if self.projection_quotient[0] > other.projection_quotient[0]:
+			for i in range(1,4):
+				#pdb.set_trace()
+				for o in range(1,4):
+					if self.projection_quotient[i] <= other.projection_quotient[o]:
+						intersecting = True
+		if intersecting == False:
+			return False
+		else:
+			intersecting = False
+		
+		# 2nd axis of self
 		for i in range(4,8):
-			self.projected_vertices.append(project(self.vertices[i], self.axes[1]))
-			other.projected_vertices.append(project(other.vertices[i], self.axes[1]))
+			self.projection_quotient.append(vector_divide((project(self.vertices[i], self.axes[1])), self.axes[1])) # self projected onto self's 2nd axis
+			other.projection_quotient.append(vector_divide((project(other.vertices[i], self.axes[1])), self.axes[1])) # other projected onto self's 2nd axis
 		
+		if self.projection_quotient[4] <= other.projection_quotient[4]:
+			for i in range(5,8):
+				for o in range(5,8):
+					if self.projection_quotient[i] >= other.projection_quotient[o]:
+						intersecting = True
+		if intersecting == False:
+			return False
+		else:
+			intersecting = False
 		
+		if self.projection_quotient[4] > other.projection_quotient[4]:
+			for i in range(5,8):
+				for o in range(5,8):
+					if self.projection_quotient[i] <= other.projection_quotient[o]:
+						intersecting = True
+		if intersecting == False:
+			return False
+		else:
+			intersecting = False
+
+		self.projection_quotient = []
+		other.projection_quotient = []
+		# 1st axis of other
+		for i in range(0,4):
+			self.projection_quotient.append(vector_divide((project(self.vertices[i], other.axes[0])), other.axes[0])) # self projected onto other's 1st axis
+			other.projection_quotient.append(vector_divide((project(other.vertices[i], other.axes[0])), other.axes[0])) # other projected onto other's 1st axis
 		
+		if self.projection_quotient[0] <= other.projection_quotient[0]:
+			for i in range(1,4):
+				for o in range(1,4):
+					if self.projection_quotient[i] >= other.projection_quotient[o]:
+						intersecting = True
+		if intersecting == False:
+			return False
+		else:
+			intersecting = False
+
+		if self.projection_quotient[0] > other.projection_quotient[0]:
+			for i in range(1,4):
+				for o in range(1,4):
+					if self.projection_quotient[i] <= other.projection_quotient[o]:
+						intersecting = True
+		if intersecting == False:
+			return False
+		else:
+			intersecting = False
+		# 2nd axis of other
+		for i in range(4,8):
+			self.projection_quotient.append(vector_divide((project(self.vertices[i], other.axes[1])), other.axes[1])) # self projected onto other's 2nd axis
+			other.projection_quotient.append(vector_divide((project(other.vertices[i], other.axes[1])), other.axes[1])) # other projected onto other's 2nd axis
+		
+		if self.projection_quotient[4] <= other.projection_quotient[4]:
+			for i in range(5,8):
+				for o in range(5,8):
+					if self.projection_quotient[i] >= other.projection_quotient[o]:
+						intersecting = True
+		if intersecting == False:
+			return False
+		else:
+			intersecting = False
+		print "Nope"
+		if self.projection_quotient[4] > other.projection_quotient[4]:
+			for i in range(5,8):
+				for o in range(5,8):
+					if self.projection_quotient[i] <= other.projection_quotient[o]:
+						intersecting = True
+		if intersecting == False:
+			return False
+		else:
+			return True
+
+class Pixel(Drawable): # For debugging
+	def __init__(self, x_coor, y_coor):
+		self.image = pyglet.resource.image("testpixel.png")
+		self.sprite = pyglet.sprite.Sprite(self.image, x_coor, y_coor, batch=pixelBatch)
 
 class Cloud(Drawable):
 	def __init__(self):
@@ -132,13 +244,16 @@ home = Nest()
 ants = []
 clouds = []
 foods = []
+#pixels = []
+
 title = Title()
 
 antBatch = pyglet.graphics.Batch()
 cloudBatch = pyglet.graphics.Batch()
 foodBatch = pyglet.graphics.Batch()
+#pixelBatch = pyglet.graphics.Batch()
 
-for i in range(0, 8):
+for i in range(0, 1):
 	ants.append(Ant())
 
 for i in range(0, 4):
@@ -146,6 +261,9 @@ for i in range(0, 4):
 
 for i in range(0, 3):
 	foods.append(Food())
+
+#for i in range(0, 4):
+#	pixels.append(Pixel(0, 0))
 
 def introScene(dt):
 	title.sprite.y -= title.dy * dt
@@ -161,39 +279,40 @@ def introScene(dt):
 		time.sleep(1)
 		
 		pyglet.clock.unschedule(introScene)
-		pyglet.clock.schedule_interval(mainScene, 1/10.0)
+		pyglet.clock.schedule_interval(mainScene, 1/30.0)
 
 def mainScene(dt):
 	glClearColor(0.612, 0.286, 0.023, 0.0)
 	glClear(GL_COLOR_BUFFER_BIT)
 	for ant in ants:
+		#pdb.set_trace()
 		ant.plus_x = 5 * float(
 				math.sin(
-					math.radians(
-						random.randint(
-							int(ant.get_rotation()-20), int(ant.get_rotation()+20)
-							))))
+				math.radians(
+				random.randint(
+				int(ant.get_rotation()-20), int(ant.get_rotation()+20)
+				))))
 		while ant.plus_x == 0:
 			ant.plus_x = 5 * float(
 					math.sin(
-						math.radians(
-							random.randint(
-								int(ant.get_rotation()-20), int(ant.get_rotation()+20)
-								))))
+					math.radians(
+					random.randint(
+					int(ant.get_rotation()-20), int(ant.get_rotation()+20)
+					))))
 
 		ant.plus_y = 5 * float(
 				math.cos(
-					math.radians(
-						random.randint(
-							int(ant.get_rotation()-20), int(ant.get_rotation()+20)
-							))))
+				math.radians(
+				random.randint(
+				int(ant.get_rotation()-20), int(ant.get_rotation()+20)
+				))))
 		while ant.plus_y == 0:
 			ant.plus_y = 5 * float(
 					math.cos(
-						math.radians(
-							random.randint(
-								int(ant.get_rotation()-20), int(ant.get_rotation()+20)
-								))))
+					math.radians(
+					random.randint(
+					int(ant.get_rotation()-20), int(ant.get_rotation()+20)
+					))))
 
 		ant.plus_rotation = math.degrees(math.atan(ant.plus_x/ant.plus_y))
 		
@@ -221,11 +340,14 @@ def mainScene(dt):
 		elif ant.get_y() + ant.get_height() / 2 > screenHeight:
 			ant.set_y(screenHeight - ant.get_height() / 2)
 			ant.set_rotation(ant.get_rotation() - 180)
+		for food in foods:
+			if ant.collides_with(food) == True:
+				print "Collision"
 
 	home.sprite.draw()
 	foodBatch.draw()
 	antBatch.draw()
-	pdb.set_trace()
+	debug_label.draw()
 
 pyglet.clock.schedule_interval(introScene, 1/60.0)
 
@@ -248,4 +370,3 @@ def on_draw():
 # TODO: move this somewhere else
 
 pyglet.app.run()
-
