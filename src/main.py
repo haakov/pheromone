@@ -27,8 +27,7 @@ def vector_divide(u, v):
 		quotient = float(u[0] / v[0])
 	except ZeroDivisionError:
 		quotient = float(u[0] / 1)
-		print "Divide by zero!"
-		# Really don't think this will ever happen
+		# Don't think this will be a problem
 	return quotient
 			
 class Drawable(object):
@@ -52,6 +51,20 @@ class Drawable(object):
 		self.sprite.y = y
 	def set_rotation(self, rotation):
 		self.sprite.rotation = rotation
+
+	def get_max(self):
+		maximum = self.projection_quotient[0]
+		for i in range(1, 4):
+			if(self.projection_quotient[i] > maximum):
+				maximum = self.projection_quotient[i]
+		return maximum
+
+	def get_min(self):
+		minimum = self.projection_quotient[0]
+		for i in range(1, 4):
+			if(self.projection_quotient[i] < minimum):
+				minimum = self.projection_quotient[i]
+		return minimum
 
 	def get_rotated_vertex(self, x, y):
 		p = self.get_x()
@@ -85,108 +98,24 @@ class Drawable(object):
 		other.axes = other.get_axes()
 		intersecting = False
 
-		# 1st axis of self
-		for i in range(0,4):
-			self.projection_quotient.append(vector_divide((project(self.vertices[i], self.axes[0])), self.axes[0])) # self projected onto self's 1st axis
-			other.projection_quotient.append(vector_divide((project(other.vertices[i], self.axes[0])), self.axes[0])) # other projected onto self's 1st axis
+		for u in range(0,2):
+			for i in range(0,4):
+				self.projection_quotient.append(vector_divide((project(self.vertices[i], self.axes[u])), self.axes[u])) # self projected onto self's 1st axis
+				other.projection_quotient.append(vector_divide((project(other.vertices[i], self.axes[u])), self.axes[u])) # other projected onto self's 1st axis
+			
+			if not ((self.get_max() > other.get_min() and self.get_min() < other.get_max()) or (self.get_min() < other.get_max() and self.get_max() > other.get_min())):
+				return False
+			#print u
 		
-		if self.projection_quotient[0] <= other.projection_quotient[0]:
-			for i in range(1,4):
-				for o in range(1,4):
-					#pdb.set_trace()
-					if self.projection_quotient[i] >= other.projection_quotient[o]:
-						intersecting = True
-		if intersecting == False:
-			return False
-		else:
-			intersecting = False
-		if self.projection_quotient[0] > other.projection_quotient[0]:
-			for i in range(1,4):
-				#pdb.set_trace()
-				for o in range(1,4):
-					if self.projection_quotient[i] <= other.projection_quotient[o]:
-						intersecting = True
-		if intersecting == False:
-			return False
-		else:
-			intersecting = False
-		
-		# 2nd axis of self
-		for i in range(4,8):
-			self.projection_quotient.append(vector_divide((project(self.vertices[i], self.axes[1])), self.axes[1])) # self projected onto self's 2nd axis
-			other.projection_quotient.append(vector_divide((project(other.vertices[i], self.axes[1])), self.axes[1])) # other projected onto self's 2nd axis
-		
-		if self.projection_quotient[4] <= other.projection_quotient[4]:
-			for i in range(5,8):
-				for o in range(5,8):
-					if self.projection_quotient[i] >= other.projection_quotient[o]:
-						intersecting = True
-		if intersecting == False:
-			return False
-		else:
-			intersecting = False
-		
-		if self.projection_quotient[4] > other.projection_quotient[4]:
-			for i in range(5,8):
-				for o in range(5,8):
-					if self.projection_quotient[i] <= other.projection_quotient[o]:
-						intersecting = True
-		if intersecting == False:
-			return False
-		else:
-			intersecting = False
-
-		self.projection_quotient = []
-		other.projection_quotient = []
-		# 1st axis of other
-		for i in range(0,4):
-			self.projection_quotient.append(vector_divide((project(self.vertices[i], other.axes[0])), other.axes[0])) # self projected onto other's 1st axis
-			other.projection_quotient.append(vector_divide((project(other.vertices[i], other.axes[0])), other.axes[0])) # other projected onto other's 1st axis
-		
-		if self.projection_quotient[0] <= other.projection_quotient[0]:
-			for i in range(1,4):
-				for o in range(1,4):
-					if self.projection_quotient[i] >= other.projection_quotient[o]:
-						intersecting = True
-		if intersecting == False:
-			return False
-		else:
-			intersecting = False
-
-		if self.projection_quotient[0] > other.projection_quotient[0]:
-			for i in range(1,4):
-				for o in range(1,4):
-					if self.projection_quotient[i] <= other.projection_quotient[o]:
-						intersecting = True
-		if intersecting == False:
-			return False
-		else:
-			intersecting = False
-		# 2nd axis of other
-		for i in range(4,8):
-			self.projection_quotient.append(vector_divide((project(self.vertices[i], other.axes[1])), other.axes[1])) # self projected onto other's 2nd axis
-			other.projection_quotient.append(vector_divide((project(other.vertices[i], other.axes[1])), other.axes[1])) # other projected onto other's 2nd axis
-		
-		if self.projection_quotient[4] <= other.projection_quotient[4]:
-			for i in range(5,8):
-				for o in range(5,8):
-					if self.projection_quotient[i] >= other.projection_quotient[o]:
-						intersecting = True
-		if intersecting == False:
-			return False
-		else:
-			intersecting = False
-		print "Nope"
-		if self.projection_quotient[4] > other.projection_quotient[4]:
-			for i in range(5,8):
-				for o in range(5,8):
-					if self.projection_quotient[i] <= other.projection_quotient[o]:
-						intersecting = True
-		if intersecting == False:
-			return False
-		else:
-			return True
-
+		for u in range(0,2):
+			for i in range(0,4):
+				self.projection_quotient.append(vector_divide((project(self.vertices[i], other.axes[u])), other.axes[u])) # self projected onto other's 1st axis
+				other.projection_quotient.append(vector_divide((project(other.vertices[i], other.axes[u])), other.axes[u])) # other projected onto other's 1st axis
+			if not ((self.get_max() > other.get_min() and self.get_min() < other.get_max()) or (self.get_min() < other.get_max() and self.get_max() > other.get_min())):
+				return False
+			#print u
+		return True
+	
 class Pixel(Drawable): # For debugging
 	def __init__(self, x_coor, y_coor):
 		self.image = pyglet.resource.image("testpixel.png")
@@ -244,14 +173,14 @@ home = Nest()
 ants = []
 clouds = []
 foods = []
-#pixels = []
+pixels = []
 
 title = Title()
 
 antBatch = pyglet.graphics.Batch()
 cloudBatch = pyglet.graphics.Batch()
 foodBatch = pyglet.graphics.Batch()
-#pixelBatch = pyglet.graphics.Batch()
+pixelBatch = pyglet.graphics.Batch()
 
 for i in range(0, 1):
 	ants.append(Ant())
@@ -348,6 +277,8 @@ def mainScene(dt):
 	foodBatch.draw()
 	antBatch.draw()
 	debug_label.draw()
+	pixelBatch.draw()
+
 
 pyglet.clock.schedule_interval(introScene, 1/60.0)
 
