@@ -6,8 +6,8 @@ import time # for time.sleep()
 import math
 import pdb
 
-screenWidth = 800
-screenHeight = 800
+screenWidth = 500
+screenHeight = 350
 
 window = pyglet.window.Window(screenWidth, screenHeight, caption="Pheromone")
 
@@ -98,6 +98,7 @@ class Drawable(object):
 		other.axes = other.get_axes()
 		intersecting = False
 
+		#pdb.set_trace()
 		for u in range(0,2):
 			for i in range(0,4):
 				self.projection_quotient.append(vector_divide((project(self.vertices[i], self.axes[u])), self.axes[u])) # self projected onto self's 1st axis
@@ -106,7 +107,10 @@ class Drawable(object):
 			if not ((self.get_max() > other.get_min() and self.get_min() < other.get_max()) or (self.get_min() < other.get_max() and self.get_max() > other.get_min())):
 				return False
 			#print u
-		
+	
+		self.projection_quotient = []
+		other.projection_quotient = []
+
 		for u in range(0,2):
 			for i in range(0,4):
 				self.projection_quotient.append(vector_divide((project(self.vertices[i], other.axes[u])), other.axes[u])) # self projected onto other's 1st axis
@@ -188,7 +192,7 @@ for i in range(0, 1):
 for i in range(0, 4):
 	clouds.append(Cloud())
 
-for i in range(0, 3):
+for i in range(0, 15):
 	foods.append(Food())
 
 #for i in range(0, 4):
@@ -272,6 +276,13 @@ def mainScene(dt):
 		for food in foods:
 			if ant.collides_with(food) == True:
 				print "Collision"
+				glClearColor(0.396, 0.745, 1.0, 0.0)
+				glClear(GL_COLOR_BUFFER_BIT)
+				ant.sprite.draw()
+				food.sprite.draw()
+				window.flip()
+				pdb.set_trace()
+				
 
 	home.sprite.draw()
 	foodBatch.draw()
