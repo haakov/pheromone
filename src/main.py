@@ -6,8 +6,8 @@ import time # for time.sleep()
 import math
 import pdb
 
-screenWidth = 500
-screenHeight = 350
+screenWidth = 1200
+screenHeight = 700
 
 window = pyglet.window.Window(screenWidth, screenHeight, caption="Pheromone")
 
@@ -17,22 +17,21 @@ pyglet.resource.reindex()
 debug_label = pyglet.text.Label('Pheromone',
 				font_size=15)
 
-def project(u, v):
+def project_quotient(u, v):
 	quotient = float(u[0] * v[0] + u[1] * v[1])
 	quotient /= float(v[0]**2 + v[1]**2)
-	return quotient * v[0], quotient * v[1]
+        return quotient
 
 def vector_divide(u, v):
 	try:
 		quotient = float(u[0] / v[0])
 	except ZeroDivisionError:
-		quotient = float(u[0] / 1)
-		# Don't think this will be a problem
+		quotient = float(u[1] / v[1])
 	return quotient
 			
 class Drawable(object):
 	def __init__(self):
-		pass
+            pass
 
 	def get_x(self):
 		return self.sprite.x
@@ -101,10 +100,9 @@ class Drawable(object):
 		#pdb.set_trace()
 		for u in range(0,2):
 			for i in range(0,4):
-				self.projection_quotient.append(vector_divide((project(self.vertices[i], self.axes[u])), self.axes[u])) # self projected onto self's 1st axis
-				other.projection_quotient.append(vector_divide((project(other.vertices[i], self.axes[u])), self.axes[u])) # other projected onto self's 1st axis
-			
-			if not ((self.get_max() > other.get_min() and self.get_min() < other.get_max()) or (self.get_min() < other.get_max() and self.get_max() > other.get_min())):
+				self.projection_quotient.append(project_quotient(self.vertices[i], self.axes[u])) # self projected onto self's 1st axis
+				other.projection_quotient.append(project_quotient(other.vertices[i], self.axes[u])) # other projected onto self's 1st axis
+                        if (self.get_max() < other.get_min() and self.get_min() < other.get_max()) or (other.get_max() < self.get_min() and other.get_min() < self.get_max()):
 				return False
 			#print u
 	
@@ -113,9 +111,9 @@ class Drawable(object):
 
 		for u in range(0,2):
 			for i in range(0,4):
-				self.projection_quotient.append(vector_divide((project(self.vertices[i], other.axes[u])), other.axes[u])) # self projected onto other's 1st axis
-				other.projection_quotient.append(vector_divide((project(other.vertices[i], other.axes[u])), other.axes[u])) # other projected onto other's 1st axis
-			if not ((self.get_max() > other.get_min() and self.get_min() < other.get_max()) or (self.get_min() < other.get_max() and self.get_max() > other.get_min())):
+				self.projection_quotient.append(project_quotient(self.vertices[i], other.axes[u])) # self projected onto other's 1st axis
+				other.projection_quotient.append(project_quotient(other.vertices[i], other.axes[u])) # other projected onto other's 1st axis
+                        if (self.get_max() < other.get_min() and self.get_min() < other.get_max()) or (other.get_max() < self.get_min() and other.get_min() < self.get_max()):
 				return False
 			#print u
 		return True
@@ -161,6 +159,8 @@ class Food(Drawable):
 		self.image = pyglet.resource.image("food/100.png")
 
 		self.sprite = pyglet.sprite.Sprite(self.image, random.randint(0, screenWidth-self.image.width), random.randint(0, screenHeight-self.image.height), batch=foodBatch)
+		self.sprite.image.anchor_x = self.get_width() / 2
+		self.sprite.image.anchor_y = self.get_height() / 2
 
 	def one_less(): # When an ant grabs a piece of food
 		pass
@@ -192,7 +192,7 @@ for i in range(0, 1):
 for i in range(0, 4):
 	clouds.append(Cloud())
 
-for i in range(0, 15):
+for i in range(0, 5):
 	foods.append(Food())
 
 #for i in range(0, 4):
@@ -278,10 +278,6 @@ def mainScene(dt):
 				print "Collision"
 				glClearColor(0.396, 0.745, 1.0, 0.0)
 				glClear(GL_COLOR_BUFFER_BIT)
-				ant.sprite.draw()
-				food.sprite.draw()
-				window.flip()
-				pdb.set_trace()
 				
 
 	home.sprite.draw()
