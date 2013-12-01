@@ -97,14 +97,15 @@ class Drawable(object):
 		other.axes = other.get_axes()
 		intersecting = False
 
-		#pdb.set_trace()
 		for u in range(0,2):
 			for i in range(0,4):
 				self.projection_quotient.append(project_quotient(self.vertices[i], self.axes[u])) # self projected onto self's 1st axis
 				other.projection_quotient.append(project_quotient(other.vertices[i], self.axes[u])) # other projected onto self's 1st axis
-                        if (self.get_max() < other.get_min() and self.get_min() < other.get_max()) or (other.get_max() < self.get_min() and other.get_min() < self.get_max()):
+                        if (self.get_max() < other.get_min() or  other.get_max() < self.get_min()):
 				return False
-			#print u
+			self.projection_quotient = []
+			other.projection_quotient = []
+
 	
 		self.projection_quotient = []
 		other.projection_quotient = []
@@ -113,9 +114,10 @@ class Drawable(object):
 			for i in range(0,4):
 				self.projection_quotient.append(project_quotient(self.vertices[i], other.axes[u])) # self projected onto other's 1st axis
 				other.projection_quotient.append(project_quotient(other.vertices[i], other.axes[u])) # other projected onto other's 1st axis
-                        if (self.get_max() < other.get_min() and self.get_min() < other.get_max()) or (other.get_max() < self.get_min() and other.get_min() < self.get_max()):
+                        if (self.get_max() < other.get_min() or  other.get_max() < self.get_min()):
 				return False
-			#print u
+			self.projection_quotient = []
+			other.projection_quotient = []
 		return True
 	
 class Pixel(Drawable): # For debugging
@@ -161,6 +163,8 @@ class Food(Drawable):
 		self.sprite = pyglet.sprite.Sprite(self.image, random.randint(0, screenWidth-self.image.width), random.randint(0, screenHeight-self.image.height), batch=foodBatch)
 		self.sprite.image.anchor_x = self.get_width() / 2
 		self.sprite.image.anchor_y = self.get_height() / 2
+		self.sprite.x = random.randint(0 + self.get_width() / 2, screenWidth - self.get_width() / 2)
+		self.sprite.y = random.randint(0 + self.get_height() / 2, screenHeight - self.get_height() / 2)
 
 	def one_less(): # When an ant grabs a piece of food
 		pass
@@ -218,7 +222,6 @@ def mainScene(dt):
 	glClearColor(0.612, 0.286, 0.023, 0.0)
 	glClear(GL_COLOR_BUFFER_BIT)
 	for ant in ants:
-		#pdb.set_trace()
 		ant.plus_x = 5 * float(
 				math.sin(
 				math.radians(
@@ -276,9 +279,6 @@ def mainScene(dt):
 		for food in foods:
 			if ant.collides_with(food) == True:
 				print "Collision"
-				glClearColor(0.396, 0.745, 1.0, 0.0)
-				glClear(GL_COLOR_BUFFER_BIT)
-				
 
 	home.sprite.draw()
 	foodBatch.draw()
